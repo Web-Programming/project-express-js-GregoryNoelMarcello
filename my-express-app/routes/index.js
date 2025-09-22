@@ -7,3 +7,7 @@ router.get('/', function(req, res, next) {
 });
 
 module.exports = router;
+
+router.get('/about', function(req, res, next) {
+  res.render('about', { title: 'About Us' });
+});
