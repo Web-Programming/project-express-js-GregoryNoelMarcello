@@ -1,17 +1,28 @@
-<% layout('layout') %>
-
-<div class="container mt-5">
-  <h1 class="text-center"><% title %></h1>
-  <div class="row">
-    <% products.forEach(product => { %>
-      <div class="col-md-4 mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="card-title"><%= product.name %></h4>
-            <p class="card-text"><%=product.description %></p>
-          </div>
-        </div>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <% if (isSearch) { %>
+      <div class="search-feedback">
+        <p>Menampilkan hasil pencarian untuk: <strong>"<%= searchQuery %>"</strong></p>
+      </div>
+    <% } else { %>
+      <p>Welcome to <%= title %></p>
+    <% } %>
+    <% if (products.length === 0) { %>
+      <p>Tidak ada produk ditemukan.</p>
+    <% } %>
+    <% products.forEach(function(product) { %>
+      <div class="product">
+        <h2><%= product.name %></h2>
+        <p>Price: $<%= product.price.toLocaleString('id-ID') %></p>
+        <p><%= product.description %></p>
+        <a href="/product/<%= product.id %>">Detail Produk</a>
       </div>
     <% }); %>
-  </div>  
-</div>
+  </body>
+</html>
