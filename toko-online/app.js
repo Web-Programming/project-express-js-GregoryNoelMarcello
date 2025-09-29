@@ -6,12 +6,13 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var engine = require('ejs-blocks'); //menggunakan ejs block
+var engine = require('ejs-blocks'); // menggunakan ejs block
 var app = express();
+var productRouter = require('./routes/product');//tambahkan router dari product.js
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.engine('ejs', engine);  //daftarkan engine ejs block
+app.engine('ejs',engine); //daftarkan engine ejs-block
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
@@ -19,13 +20,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-//serving bootstrap
-app.use('/bootstrap', express.static(path.join(__dirname,'node_modules/bootstrap/dist')));
 
+//Serving bootstrap
+app.use('/bootstrap', express.static(path.join(__dirname, 'node_modules/bootstrap/dist')));
+// path join ini adalah path yang akan menggabungkan (joinkan) folder ke folder public
+// __dirname adalah folder project kita
+// 'node_modules/bootstrap/dist' adalah file yang akan kita akses
+// ada cara agar server tetap hidup walaupun sering ada perubahan yaitu dengan cara 'npm install nodemon'
+// nodemon adalah dependensi yang akan otomatis refresh server kita ketika terjadi perubahan
+// cara pakai nodemon adalah nodemon /bin/www
+// cara hapus dependensi adalah npm remove {nama dependensinya}
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-var productRouter = require('./routes/product');//letak diatas agar rapi
-app.use('/product', productRouter);
+app.use('/product', productRouter); //gunakan router product untuk route yang kita daftarkan tadi
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
