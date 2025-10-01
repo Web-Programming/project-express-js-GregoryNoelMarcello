@@ -33,7 +33,7 @@ app.use('/bootstrap', express.static(path.join(__dirname, 'node_modules/bootstra
 // cara pakai nodemon adalah nodemon /bin/www
 // cara hapus dependensi adalah npm remove {nama dependensinya}
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', usersRouter);
 app.use('/product', productRouter); //gunakan router product untuk route yang kita daftarkan tadi
 
 // catch 404 and forward to error handler
