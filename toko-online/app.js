@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+require('./app_toko_online/models/db'); //import database
 
 //perbaikan 2
 var indexRouter = require('./app_toko_online/routes/index');
