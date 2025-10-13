@@ -6,7 +6,12 @@ const Product = require('../../models/products');
 //url create - POST ()
 router.post("/", controllerProducts.create);
 //url read all - GET
-router.get("/", controllerProducts.api);
+router.get("/", controllerProducts.all);
 //url read one - detail - GET
+router.get("/:id", controllerProducts.detailproduk);
 //url update - PUT
+router.put("/:id", controllerProducts.update);
 //url delete - DELETE
+router.delete("/:id", controllerProducts.remove);
+
+module.exports = router;

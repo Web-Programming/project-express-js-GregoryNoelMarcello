@@ -10,7 +10,7 @@ require('./app_toko_online/models/db');//memanggil file db.js untuk koneksi ke d
 var indexRouter = require('./app_toko_online/routes/index');
 var usersRouter = require('./app_toko_online/routes/users');
 var productsRouter = require('./app_toko_online/routes/product');
-var apiProductRouter = require('./app_toko_online/routes/apiProduct');
+var apiProductRouter = require('./app_toko_online/routes/api/product');
 var controllerProducts = require('./app_toko_online/controllers/ControllerProducts');
 var app = express();
 
@@ -50,7 +50,48 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-const create = async , res) => {
+const detail = async (req, res) => {
 };
 
-module.exports = app;
+const all = async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({
+      status : false,
+      message: "Gagal memuat produk"
+     });
+  }
+};
+
+const create = async (req, res) => {
+  try{
+    const newProduct = new Product({
+      name: req.body.name,
+      price: req.body.price,
+      description: req.body.description,
+      stock: req.body.stock || 0
+    })
+    const savedProduct = await newProduct.save();
+    res.status(200).json({
+      status : true,
+      message: "Produk berhasil ditambahkan",
+      data: product
+    })
+  }catch(err){
+    res.status(500).json({ 
+      status : false,
+      message: "Internal server error"
+    });
+  }
+};
+
+const detailproduk = async(req, res) => {
+};
+
+const update = async(req, res) => {
+};
+
+
+module.exports =  {index, detail, all, create, detailproduk, update, remove};
