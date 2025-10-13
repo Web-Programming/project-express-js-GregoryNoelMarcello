@@ -1,4 +1,3 @@
-
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -10,7 +9,8 @@ require('./app_toko_online/models/db');//memanggil file db.js untuk koneksi ke d
 //perbaikan 2
 var indexRouter = require('./app_toko_online/routes/index');
 var usersRouter = require('./app_toko_online/routes/users');
-var productsRouter = require('./app_toko_online/routes/products');
+var productsRouter = require('./app_toko_online/routes/product');
+var apiProductRouter = require('./app_toko_online/routes/apiProduct');
 var controllerProducts = require('./app_toko_online/controllers/ControllerProducts');
 var app = express();
 
@@ -49,5 +49,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+const create = async , res) => {
+};
 
 module.exports = app;
