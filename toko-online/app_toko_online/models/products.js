@@ -1,32 +1,33 @@
-const mongoose = require("mongoose");
-
+const mongoose = require('mongoose');
+//buat skema produk
 const productSchema = new mongoose.Schema({
+    //tidak perlu membuat field id, karena mongoose otomatis membuatkan field _id
     name: {
-        type: String, 
-        required: [true, 'Nama produk harus diisi'],
-        trim: true,
+        type: String,   
+        required: [ true,'Nama produk harus diisi' ],
+        trim: true//menghilangkan spasi di awal dan akhir
     },
     price: {
         type: Number,
-        required: [true, 'Harga produk harus diisi'],
-        min: [1000, 'Harga produk minimal 1000'],
-        //max: [100000000, 'Harga produk maksimal 100000000'],
+        required: [ true,'Harga produk harus diisi' ],
+        min:[1000,'Harga produk minimal 1000']//nilai minimal
+        // max:[1000,'Harga produk minimal 1000']
     },
     description: {
         type: String,
-        required: false,
+        required: false//menandakan field ini tidak wajib diisi
     },
     stock: {
         type: Number,
-        default: 0,
+        default: 0//memberikan nilai bawaan/default
     },
-    createdAt: {
+    createAt:{
         type: Date,
-        default: Date.now,
+        default: Date.now//memberikan nilai bawaan berupa tanggal sekarang
     }
 });
 
-//buat skema
-const Product = mongoose.model('Product', productSchema);
 
+//Buat model dari skema
+const Product = mongoose.model('Product',productSchema);
 module.exports = Product;
