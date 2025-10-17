@@ -3,22 +3,24 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var engine = require('ejs-blocks');
-require('./app_toko_online/models/db');//memanggil file db.js untuk koneksi ke database
+//panggil file koneksi database
+require("./app_toko_online/models/db");
 
-//perbaikan 2
+//Perbaikan ke 2
 var indexRouter = require('./app_toko_online/routes/index');
 var usersRouter = require('./app_toko_online/routes/users');
-var productsRouter = require('./app_toko_online/routes/product');
-var apiProductRouter = require('./app_toko_online/routes/api/product');
-var controllerProducts = require('./app_toko_online/controllers/ControllerProducts');
+var productRouter = require("./app_toko_online/routes/product"); //letakkan di atas agar rapi
+var apiProductRouter = require("./app_toko_online/routes/api/product"); //import route api
+var apiUserRouter = require("./app_toko_online/routes/api/user"); //import route api users
+var engine = require('ejs-blocks'); //menggunakan ejs block
 var app = express();
-
+var user = require('./app_toko_online/controllers/user');
 
 // view engine setup
-app.set('views', path.join(__dirname,'app_toko_online', 'views'));//perbaikan 1
+app.set('views', path.join(__dirname, 'app_toko_online', 'views')); //perbaikan 1
+app.engine('ejs', engine);  //daftarkan engine ejs block
 app.set('view engine', 'ejs');
-app.engine('ejs', engine);
+
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -26,13 +28,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 //serving bootstrap
-app.use('/bootstrap', express.static(path.join(__dirname, '../node_modules/bootstrap/dist')));
-
-
+app.use('/bootstrap', express.static(path.join(__dirname,'node_modules/bootstrap/dist')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/products', productsRouter);
+app.use("/produk", productRouter);
+app.use("/api/produk", apiProductRouter); //daftarkan route api
+app.use("/api/users", apiUserRouter); //daftarkan route api users
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -50,48 +52,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-const detail = async (req, res) => {
-};
-
-const all = async (req, res) => {
-  try {
-    const products = await Product.find();
-    res.json(products);
-  } catch (err) {
-    res.status(500).json({
-      status : false,
-      message: "Gagal memuat produk"
-     });
-  }
-};
-
-const create = async (req, res) => {
-  try{
-    const newProduct = new Product({
-      name: req.body.name,
-      price: req.body.price,
-      description: req.body.description,
-      stock: req.body.stock || 0
-    })
-    const savedProduct = await newProduct.save();
-    res.status(200).json({
-      status : true,
-      message: "Produk berhasil ditambahkan",
-      data: product
-    })
-  }catch(err){
-    res.status(500).json({ 
-      status : false,
-      message: "Internal server error"
-    });
-  }
-};
-
-const detailproduk = async(req, res) => {
-};
-
-const update = async(req, res) => {
-};
-
-
-module.exports =  {index, detail, all, create, detailproduk, update, remove};
+module.exports = app;
